@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:payment_interface/view/base_view.dart';
 import 'package:payment_interface/viewmodels/pay_viewmodel.dart';
 
@@ -64,26 +65,43 @@ class PayView extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 40),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text(
-                    '₹',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 30,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                  Text(
-                    '501',
-                    style: TextStyle(
+              Form(
+                key: model.key,
+                child: SizedBox(
+                  height: 60,
+                  width: 150,
+                  child: TextFormField(
+                    controller: model.controller,
+                    cursorColor: Colors.white,
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 60,
                       fontWeight: FontWeight.normal,
                     ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Required Field";
+                      }
+
+                      return null;
+                    },
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    decoration: const InputDecoration(
+                      hintText: '00',
+                      prefixIconConstraints: BoxConstraints(maxWidth: 15),
+                      prefixIcon: Text(
+                        '₹',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 30,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                      border: InputBorder.none,
+                    ),
                   ),
-                ],
+                ),
               ),
               const SizedBox(height: 10),
               const Text(
@@ -129,7 +147,8 @@ class PayView extends StatelessWidget {
                     const SizedBox(height: 10),
                     MaterialButton(
                       onPressed: () {
-                        Navigator.of(context).pushNamed('/upi');
+                        Navigator.of(context).pushNamed('/upi',
+                            arguments: model.controller.text);
                       },
                       color: Colors.blue[700],
                       shape: const RoundedRectangleBorder(
