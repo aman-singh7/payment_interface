@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:payment_interface/locator.dart';
+import 'package:payment_interface/router.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,7 +18,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomeView(),
+      onGenerateRoute: AppRouter.onGenerateRoute,
+      initialRoute: '/',
     );
   }
 }
